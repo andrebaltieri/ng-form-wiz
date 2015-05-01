@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="assets/css/styles-bundle.min.css"/>
+    <style>
+        .cropArea {
+            background: #E4E4E4;
+            width:500px;
+            height:350px;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">NG FORM WIZ</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="#/">Sobre</a></li>
+        </ul>
+    </div>
+</nav>
+<br/><br/><br/>
+
+<div class="container animated bounceIn">
+    <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Placeholder" id="first_name" type="text" class="validate">
+                    <label for="first_name">First Name</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="last_name" type="text" class="validate">
+                    <label for="last_name">Last Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input disabled value="I am not editable" id="disabled" type="text" class="validate">
+                    <label for="disabled">Disabled</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="password" type="password" class="validate">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="email" type="email" class="validate">
+                    <label for="email">Email</label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr/>
+<br/><br/>
+
+<div ng-controller="Ctrl" class="container">
+    <div>Select an image file: <input type="file" id="fileInput"/></div>
+    <div class="cropArea">
+        <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+    </div>
+    <div>Cropped Image:</div>
+    <div><img ng-src="{{myCroppedImage}}"/></div>
+</div>
+
+<script src="assets/libs/scripts-bundle.min.js"></script>
+<script>
+    angular.module('app', ['ngImgCrop'])
+            .controller('Ctrl', function ($scope) {
+                $scope.myImage = '';
+                $scope.myCroppedImage = '';
+
+                var handleFileSelect = function (evt) {
+                    var file = evt.currentTarget.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function (evt) {
+                        $scope.$apply(function ($scope) {
+                            $scope.myImage = evt.target.result;
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                };
+                angular.element(document.querySelector('#fileInput')).on('change', handleFileSelect);
+            });
+</script>
+</body>
+</html>
